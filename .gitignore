@@ -1,0 +1,8 @@
+*.class
+
+# Ignore unnecessary files
+doc/
+*.swp
+*~
+.project
+.DS_Store

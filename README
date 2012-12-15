@@ -1,0 +1,92 @@
+Application: Rubik's Cube Solver
+Author:      Jim Pasko
+
+
+About:
+
+The Rubik's Cube Solver is a command-line program to solve a scrambled Rubik's
+Cube in the optimal (shortest) number of moves possible.  All cube states can
+be returned to the solved state in 20 moves or fewer.  For this purpose, a
+move is considered to be a 90 or 180 degree rotation of any external face.
+
+The application proceeds as follows:
+
+1. A minimum-length heuristic is computed based on the corner cubies (individual
+   cubes that comprise the larger Rubik's Cube).  In order to solve the full
+   Cube, each corner cubie must be solved.  The corner cubies, taken together,
+   are equivalent to a 2x2x2 Rubik's Cube, which has a small enough solution
+   space to be fully enumerable in memory.
+
+2. User entry and validation occur.
+
+3. The application begins searching the solution space.  The algorithm is IDA*,
+   which is an iteratively-deepened version of A* using the afore-mentioned
+   heuristic.
+
+4. Once a solution is found, it is printed to the console.  The notation is
+   <face-color><rotation-degrees><direction>.
+
+   face-color: the color of the middle cubie on that face, which forms a
+               rotation-invarient coordinate system.  The options are
+	       white, red, yellow, orange, green, blue
+
+   rotation-degrees: 90 or 180 degrees.
+
+   direction: Clockwise (CW) or counter-clockwise (CCW).  Only applies to 90
+              degree rotations.
+
+
+Caveats:
+
+--The application currently uses a large amount of memory to compute its
+  search heuristic.  In order to run this application, your machine must
+  have about 8 GB(!!) of RAM.
+
+--Computation of the search heuristic is done each time the application is run.
+  This is obviously unnecessary, as the heuristic doesn't change.  However, the
+  Rubik's Cube solver was done as an exercise in search and heuristics, and
+  reading the heursitic in from a file would be something to do later.
+
+--Computation of the heuristic is time consuming.  On my machine, it takes about
+  10 minutes, which is a long time to wait for the application to warm up.  My
+  apologies.
+
+--The UI is command-line only, and somewhat cumbersome.  Again, my apologies.
+
+--The search space is huge (there are 43 quintillion states. quintillion = 10^18)
+  Because the search space is so large, cubes that have been scrambled further
+  than ~11 moves will take way too long to solve on an average desktop machine.	
+  Again, this application is an exercise, not a fully-fledged solver.  If you
+  really fuck up your cube, try a non-optimal solver.  Getting solution
+  optimality is a difficult task.
+
+--You'll notice that I don't use any of the Collections framework.  This is
+  because I needed to make custom data structures that operated quickly and
+  in a space-efficient manner.  I needed to make extensive use of literals
+  and very low-level and application-specific encodings.
+
+--You must use Java 7.  This application makes extensive use of binary literals,
+  which are not supported in Java 6.  Binary literals are used to compress
+  the size of many data structures.
+
+--If I were to write this application today, I would choose a different
+  directory structure.  I would also clean up my coding style a bit.
+
+
+To run the Rubik's Cube Solver:
+
+YOU MUST use Java 7. See above caveats.
+
+1.
+	$ cd <location of src directory>
+
+2.
+	$ javac Solver.java
+
+3.
+	$ java -Xmx8g Solver
+
+
+References:
+
+This application is based on work by Professor Richard Korf of UCLA.
